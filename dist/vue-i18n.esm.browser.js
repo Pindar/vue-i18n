@@ -188,7 +188,7 @@ function extend (Vue) {
 /*  */
 
 var mixin = {
-  beforeCreate () {
+  beforeMount () {
     const options = this.$options;
     options.i18n = options.i18n || (options.__i18n ? {} : null);
 

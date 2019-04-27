@@ -218,7 +218,7 @@
   /*  */
 
   var mixin = {
-    beforeCreate: function beforeCreate () {
+    beforeMount: function beforeMount () {
       var options = this.$options;
       options.i18n = options.i18n || (options.__i18n ? {} : null);
 

@@ -4,7 +4,7 @@ import VueI18n from './index'
 import { isPlainObject, warn, merge } from './util'
 
 export default {
-  beforeCreate (): void {
+  beforeMount (): void {
     const options: any = this.$options
     options.i18n = options.i18n || (options.__i18n ? {} : null)
 
