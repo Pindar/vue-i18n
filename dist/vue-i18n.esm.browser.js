@@ -208,6 +208,7 @@ var mixin = {
             }
           }
         }
+        this._i18n = options.i18n;
       } else if (isPlainObject(options.i18n)) {
         // component local i18n
         if (this.$root && this.$root.$i18n && this.$root.$i18n instanceof VueI18n) {
@@ -219,6 +220,7 @@ var mixin = {
           options.i18n.pluralizationRules = this.$root.$i18n.pluralizationRules;
           options.i18n.preserveDirectiveContent = this.$root.$i18n.preserveDirectiveContent;
         }
+
         // init locale messages via custom blocks
         if (options.__i18n) {
           try {
@@ -233,11 +235,19 @@ var mixin = {
             }
           }
         }
+
+        this._i18n = new VueI18n(options.i18n);
       } else {
         {
           warn(`Cannot be interpreted 'i18n' option.`);
         }
       }
+    } else if (this.$root && this.$root.$i18n && this.$root.$i18n instanceof VueI18n) {
+      // root i18n
+      this._i18n = this.$root.$i18n;
+    } else if (options.parent && options.parent.$i18n && options.parent.$i18n instanceof VueI18n) {
+      // parent i18n
+      this._i18n = options.parent.$i18n;
     }
   },
 
@@ -251,7 +261,6 @@ var mixin = {
         this._i18n.subscribeDataChanging(this);
         this._subscribing = true;
         this._i18nWatcher = this._i18n.watchI18nData();
-        this._i18n = options.i18n;
       } else if (isPlainObject(options.i18n)) {
         this._i18n.subscribeDataChanging(this);
         this._subscribing = true;
@@ -259,20 +268,15 @@ var mixin = {
         if (options.i18n.sync === undefined || !!options.i18n.sync) {
           this._localeWatcher = this.$i18n.watchLocale();
         }
-        this._i18n = new VueI18n(options.i18n);
       } else {
         {
           warn(`Cannot be interpreted 'i18n' option.`);
         }
       }
     } else if (this.$root && this.$root.$i18n && this.$root.$i18n instanceof VueI18n) {
-      // root i18n
-      this._i18n = this.$root.$i18n;
       this._i18n.subscribeDataChanging(this);
       this._subscribing = true;
     } else if (options.parent && options.parent.$i18n && options.parent.$i18n instanceof VueI18n) {
-      // parent i18n
-      this._i18n = options.parent.$i18n;
       this._i18n.subscribeDataChanging(this);
       this._subscribing = true;
     }
